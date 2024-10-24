@@ -24,7 +24,6 @@ public class MainControllerTest {
 
     @Test
     public void testUpdateStudentById() {
-//        int id = 1;
         StudentDto dto = StudentDto.builder().name("Igor").age(18).build();
         Student student = new Student(1,"Igor",18);
         when(service.updateStudent(id,dto))
@@ -34,11 +33,11 @@ public class MainControllerTest {
     }
     @Test
     public void testThrowExceptionByUpdateStudentById() {
-//        int id = 1;
         StudentDto dto = new StudentDto();
         when(service.updateStudent(id,dto))
                 .thenThrow(new CustomException("Student with id=" + id + " not found"));
 
-        assertThrows(CustomException.class,()->controller.updateStudentById(id,dto));
+        var exception = assertThrows(CustomException.class,()->controller.updateStudentById(id,dto));
+        assertEquals(exception.getMessage(),"Student with id=" + id + " not found");
     }
 }
