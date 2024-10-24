@@ -19,7 +19,7 @@ import java.util.List;
 @RequestMapping("/students")
 @RequiredArgsConstructor
 public class MainController {
-    private final StudentServiceImpl userServiceImp;
+    private final StudentServiceImpl studentServiceImp;
 
     /**
      * пердназначен для записи данных передаваемой сущности в базу
@@ -28,7 +28,7 @@ public class MainController {
     @PostMapping()
     public void addStudent(@RequestBody StudentDto studentDto) {
 
-        log.info("Add one new user: {}", userServiceImp.saveStudent(
+        log.info("Add one new user: {}", studentServiceImp.saveStudent(
                 Student.builder()
                 .setName(studentDto.getName())
                 .setAge(studentDto.getAge())
@@ -40,7 +40,7 @@ public class MainController {
      */
     @GetMapping()
     public List<Student> getAllStudents() {
-        return userServiceImp.getStudents();
+        return studentServiceImp.getStudents();
     }
 
     /**
@@ -49,7 +49,7 @@ public class MainController {
      */
     @GetMapping("/{id}")
     public StudentDto findStudentById(@PathVariable int id) {
-        Student serchedStudent = userServiceImp.getStudent(id);
+        Student serchedStudent = studentServiceImp.getStudent(id);
         return new StudentDto(serchedStudent.getName(), serchedStudent.getAge());
     }
 
@@ -59,7 +59,7 @@ public class MainController {
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> deleteStudentById(@PathVariable int id) {
-        userServiceImp.deleteStudent(id);
+        studentServiceImp.deleteStudent(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
@@ -70,7 +70,7 @@ public class MainController {
      */
     @PatchMapping("/{id}")
     public StudentDto updateStudentById(@PathVariable int id, @RequestBody StudentDto studentDto) {
-        Student updatedStudent = userServiceImp.updateStudent(id, studentDto);
+        Student updatedStudent = studentServiceImp.updateStudent(id, studentDto);
         return new StudentDto(updatedStudent.getName(), updatedStudent.getAge());
     }
 }

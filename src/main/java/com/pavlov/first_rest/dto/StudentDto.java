@@ -13,6 +13,7 @@ import java.util.Objects;
 @FieldDefaults(level=AccessLevel.PRIVATE)
 @Getter
 @Setter
+@Builder
 public class StudentDto {
     String name;
     int age;
