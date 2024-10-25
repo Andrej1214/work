@@ -26,13 +26,14 @@ public class MainController {
      * @param studentDto данные сущности Student передаваемые в таблицу student
      */
     @PostMapping()
-    public void addStudent(@RequestBody StudentDto studentDto) {
+    public ResponseEntity<HttpStatus> addStudent(@RequestBody StudentDto studentDto) {
 
         log.info("Add one new user: {}", studentServiceImp.saveStudent(
                 Student.builder()
                 .setName(studentDto.getName())
                 .setAge(studentDto.getAge())
                         .build()));
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     /**
