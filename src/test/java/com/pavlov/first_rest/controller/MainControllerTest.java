@@ -6,23 +6,15 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
@@ -57,8 +49,8 @@ public class MainControllerTest {
                 .andExpect(status().isCreated());
         Student expectedStudent = repository.findById(id).get();
         assertAll(
-                ()->{ assertEquals("Alex", expectedStudent.getName()); },
-                ()->{ assertEquals(20, expectedStudent.getAge()); }
+                ()-> assertEquals("Alex", expectedStudent.getName()),
+                ()-> assertEquals(20, expectedStudent.getAge())
 
         );
     }
@@ -95,18 +87,24 @@ public class MainControllerTest {
 
     @Test
     public void updateStudentById() throws Exception {
-        long id = createTestStudent("Alex",19).getId();
+        int id = createTestStudent("Alex",19).getId();
         String studentDto = """
                 {
                     "name": "Oleg",
                     "age": 25
                 }""";
 
-        mockMvc.perform(patch("/students/{0}", "0")
+        mockMvc.perform(patch("/students/{id}", id)
                         .content(studentDto)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
+        Student expectedStudent = repository.findById(id).get();
+        assertAll(
+                ()->assertEquals(1,expectedStudent.getId()),
+                ()->assertEquals("Oleg",expectedStudent.getName()),
+                ()->assertEquals(25,expectedStudent.getAge())
+        );
     }
     private Student createTestStudent(String name,int age) {
         Student person = new Student(id,name,age);
