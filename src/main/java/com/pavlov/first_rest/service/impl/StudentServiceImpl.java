@@ -61,7 +61,8 @@ public class StudentServiceImpl implements StudentService {
     public Student updateStudent(int id, StudentDto studentDto) {
         Student student = studentRepo.findById(id).stream().findFirst()
                 .orElseThrow(() -> new CustomException("Student with id=" + id + " not found"));
-        String name = studentDto.getName() == null||studentDto.getName().isEmpty() ? student.getName() : studentDto.getName();
+        String name = studentDto.getName() == null||studentDto.getName().isEmpty() ?
+                student.getName() : studentDto.getName();
         int age = studentDto.getAge() == 0 ? student.getAge() : studentDto.getAge();
         Student updatedStudent = Student.builder()
                 .setId(id)
