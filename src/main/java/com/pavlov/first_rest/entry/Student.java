@@ -9,7 +9,7 @@ import java.util.Objects;
 @Entity
 @Table(name="student")
 @Setter
-@Getter()
+@Getter
 @Builder(setterPrefix = "set")
 @NoArgsConstructor
 @AllArgsConstructor
