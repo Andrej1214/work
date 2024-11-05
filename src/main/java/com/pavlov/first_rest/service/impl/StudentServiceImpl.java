@@ -27,6 +27,7 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public List<Student> getStudents() {
         if (studentRepo.findAll().isEmpty()) {
+            log.debug("List of students is empty");
             throw new CustomException("List of students is empty");
         }
         return studentRepo.findAll().stream()
@@ -41,7 +42,10 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Student getStudent(int id) {
         return studentRepo.findById(id).stream().findFirst()
-                .orElseThrow(() -> new CustomException("Student with id=" + id + " not found"));
+                .orElseThrow(() -> {
+                    log.error("Student with id {} not found", id);
+                    return new CustomException("Student with id=" + id + " not found");
+                });
     }
 
     /**
@@ -78,6 +82,7 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public void deleteStudent(int id) {
         if (!studentRepo.existsById(id)) {
+            log.error("Student with id=" + id + " not found");
             throw new CustomException("Student with id=" + id + " not found");
         }
         studentRepo.deleteById(id);
