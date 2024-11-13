@@ -3,11 +3,12 @@ package com.pavlov.first_rest.entry;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.proxy.HibernateProxy;
 
 import java.util.Objects;
 
 @Entity
-@Table(name="student")
+@Table(name = "student")
 @Setter
 @Getter
 @Builder(setterPrefix = "set")
@@ -25,6 +26,7 @@ public class Student {
 
     /**
      * метод для сравнения текущего объекта с объектом передакаемом в параметре метода
+     *
      * @param o передаваемый для сравнения объект
      * @return возвращает true, если данный объект имеет ту же ссылку, что и переданый.
      * Если переданый объект не ссылается на null и классы текущего объекта и переданного не равны, то возвращаем false.
@@ -32,11 +34,17 @@ public class Student {
      * В конце, мы возвращаем объединенный результат сравнения каждого свойства по отдельности.
      */
     @Override
-    public boolean equals(Object o) {
+    public final boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null) return false;
+        Class<?> oEffectiveClass = o instanceof HibernateProxy ?
+                ((HibernateProxy) o).getHibernateLazyInitializer()
+                        .getPersistentClass() : o.getClass();
+        Class<?> thisEffectiveClass = this instanceof HibernateProxy ?
+                ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
+        if (thisEffectiveClass != oEffectiveClass) return false;
         Student student = (Student) o;
-        return id == student.id && age == student.age && Objects.equals(name, student.name);
+        return getId() != 0 && Objects.equals(getId(), student.getId());
     }
 
     /**
@@ -44,7 +52,9 @@ public class Student {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, age);
+        return this instanceof HibernateProxy ?
+                ((HibernateProxy) this).getHibernateLazyInitializer()
+                        .getPersistentClass().hashCode() : getClass().hashCode();
     }
 
     /**
