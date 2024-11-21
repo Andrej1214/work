@@ -3,7 +3,7 @@ package com.pavlov.first_rest.controller_mock;
 import com.pavlov.first_rest.controller.MainController;
 import com.pavlov.first_rest.dto.StudentDto;
 import com.pavlov.first_rest.entry.Student;
-import com.pavlov.first_rest.exception.CustomException;
+import com.pavlov.first_rest.exception.CustomNotFoundException;
 import com.pavlov.first_rest.service.impl.StudentServiceImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -54,9 +54,9 @@ public class MainControllerTest {
     @Test
     @DisplayName("Проверка того, что при отсутствии студента с таким id метод выбрасывает исключение с текстом \"Student with id=id_number not found\"")
     public void testThrowExceptionByFindStudentById() {
-        when(service.getStudent(id)).thenThrow(new CustomException("Student with id=" + id + " not found"));
+        when(service.getStudent(id)).thenThrow(new CustomNotFoundException("Student with id=" + id + " not found"));
 
-        var exception = assertThrows(CustomException.class,()->controller.findStudentById(id));
+        var exception = assertThrows(CustomNotFoundException.class,()->controller.findStudentById(id));
         assertEquals(exception.getMessage(),"Student with id=" + id + " not found");
     }
 
@@ -69,10 +69,10 @@ public class MainControllerTest {
     @Test
     @DisplayName("Проверка того, что при отсутствии студента с таким id метод выбрасывает исключение с текстом \"Student with id=id_number not found\"")
     public void testThrowExceptionByDeleteStudentById() {
-        doThrow(new CustomException("Student with id=" + id + " not found"))
+        doThrow(new CustomNotFoundException("Student with id=" + id + " not found"))
                 .when(service).deleteStudent(id);
 
-        var exception = assertThrows(CustomException.class,()->controller.deleteStudentById(id));
+        var exception = assertThrows(CustomNotFoundException.class,()->controller.deleteStudentById(id));
         assertEquals(exception.getMessage(),"Student with id=" + id + " not found");
     }
     @Test
@@ -87,9 +87,9 @@ public class MainControllerTest {
     @DisplayName("Проверка того, что при отсутствии студента с таким id метод выбрасывает исключение с текстом \"Student with id=id_number not found\"")
     public void testThrowExceptionByUpdateStudentById() {
         when(service.updateStudent(id, studentDto))
-                .thenThrow(new CustomException("Student with id=" + id + " not found"));
+                .thenThrow(new CustomNotFoundException("Student with id=" + id + " not found"));
 
-        var exception = assertThrows(CustomException.class,()->controller.updateStudentById(id, studentDto));
+        var exception = assertThrows(CustomNotFoundException.class,()->controller.updateStudentById(id, studentDto));
         assertEquals(exception.getMessage(),"Student with id=" + id + " not found");
     }
 }

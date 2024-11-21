@@ -2,7 +2,7 @@ package com.pavlov.first_rest.service.impl;
 
 import com.pavlov.first_rest.dto.StudentDto;
 import com.pavlov.first_rest.entry.Student;
-import com.pavlov.first_rest.exception.CustomException;
+import com.pavlov.first_rest.exception.CustomNotFoundException;
 import com.pavlov.first_rest.repository.StudentRepo;
 import com.pavlov.first_rest.service.StudentService;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +27,7 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public List<Student> getStudents() {
         if (studentRepo.findAll().isEmpty()) {
-            throw new CustomException("List of students is empty");
+            throw new CustomNotFoundException("List of students is empty");
         }
         return studentRepo.findAll().stream()
                 .sorted(Comparator.comparing(Student::getName))
@@ -41,7 +41,7 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Student getStudent(int id) {
         return studentRepo.findById(id).stream().findFirst()
-                .orElseThrow(() -> new CustomException("Student with id=" + id + " not found"));
+                .orElseThrow(() -> new CustomNotFoundException("Student with id=" + id + " not found"));
     }
 
     /**
@@ -60,7 +60,7 @@ public class StudentServiceImpl implements StudentService {
      */
     public Student updateStudent(int id, StudentDto studentDto) {
         Student student = studentRepo.findById(id).stream().findFirst()
-                .orElseThrow(() -> new CustomException("Student with id=" + id + " not found"));
+                .orElseThrow(() -> new CustomNotFoundException("Student with id=" + id + " not found"));
         String name = studentDto.getName() == null||studentDto.getName().isEmpty() ?
                 student.getName() : studentDto.getName();
         int age = studentDto.getAge() == 0 ? student.getAge() : studentDto.getAge();
@@ -78,7 +78,7 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public void deleteStudent(int id) {
         if (!studentRepo.existsById(id)) {
-            throw new CustomException("Student with id=" + id + " not found");
+            throw new CustomNotFoundException("Student with id=" + id + " not found");
         }
         studentRepo.deleteById(id);
     }

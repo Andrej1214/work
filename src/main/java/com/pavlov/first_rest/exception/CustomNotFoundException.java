@@ -3,8 +3,8 @@ package com.pavlov.first_rest.exception;
 /**
  *  кастомный класс для создания своих исключений
  */
-public class CustomException extends RuntimeException {
-    public CustomException(String message) {
+public class CustomNotFoundException extends RuntimeException {
+    public CustomNotFoundException(String message) {
         super(message);
     }
 }

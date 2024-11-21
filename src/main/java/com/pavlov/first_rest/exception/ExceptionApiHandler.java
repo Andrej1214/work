@@ -1,6 +1,5 @@
-package com.pavlov.first_rest.controller.excep;
+package com.pavlov.first_rest.exception;
 
-import com.pavlov.first_rest.exception.CustomException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -17,7 +16,7 @@ public class ExceptionApiHandler {
      * @return объект класса AppError обёрнутый в ResponseEntity содержащий http-код ответа и сообщение
      */
     @ExceptionHandler
-    public ResponseEntity<AppError> handleCustomException(CustomException e) {
+    public ResponseEntity<AppError> handleCustomException(CustomNotFoundException e) {
         return new ResponseEntity<>(new AppError(HttpStatus.NOT_FOUND.value(), e.getMessage()), HttpStatus.NOT_FOUND);
     }
 }

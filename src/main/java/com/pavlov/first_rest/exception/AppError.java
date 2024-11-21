@@ -1,4 +1,4 @@
-package com.pavlov.first_rest.controller.excep;
+package com.pavlov.first_rest.exception;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
