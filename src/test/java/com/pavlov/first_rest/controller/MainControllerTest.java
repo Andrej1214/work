@@ -34,8 +34,6 @@ public class MainControllerTest extends AbstractTest {
     @Autowired
     private StudentRepo repository;
     @Autowired
-    private StudentService studentService;
-    @Autowired
     private JdbcTemplate jdbcTemplate;
 
     @Test
@@ -49,7 +47,6 @@ public class MainControllerTest extends AbstractTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated());
         Student expectedStudent = repository.findById(id).get();
-
         assertAll(
                 () -> assertEquals("Alex", expectedStudent.getName()),
                 () -> assertEquals(20, expectedStudent.getAge()),
