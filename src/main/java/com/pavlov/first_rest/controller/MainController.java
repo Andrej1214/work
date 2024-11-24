@@ -7,10 +7,12 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 /**
@@ -34,13 +36,14 @@ public class MainController {
     )
     @PostMapping()
     public ResponseEntity<HttpStatus> addStudent(@RequestBody StudentDto studentDto) {
-
-        log.info("Add one new user: {}", studentServiceImp.saveStudent(
+        Student student = studentServiceImp.saveStudent(
                 Student.builder()
-                .setName(studentDto.getName())
-                .setAge(studentDto.getAge())
-                        .build()));
-        return new ResponseEntity<>(HttpStatus.CREATED);
+                        .setName(studentDto.getName())
+                        .setAge(studentDto.getAge())
+                        .build());
+        log.info("Add one new user: {}", student);
+        // при добавлении сущности в заголовок добавлять Location с url созданной сущности
+        return ResponseEntity.created(URI.create("/students/" + student.getId())).build();
     }
 
     /**

@@ -44,15 +44,18 @@ public class MainControllerTest extends AbstractTest {
         int id = 1;
         StudentDto studentDto = new StudentDto("Alex", 20);
         String studentDtoJson = objectMapper.writeValueAsString(studentDto);
-        mockMvc.perform(post("/students")
+        var resp = mockMvc.perform(post("/students")
                         .content(studentDtoJson)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated());
         Student expectedStudent = repository.findById(id).get();
+
         assertAll(
                 () -> assertEquals("Alex", expectedStudent.getName()),
                 () -> assertEquals(20, expectedStudent.getAge()),
-                ()-> repository.deleteById(id)
+                ()-> repository.deleteById(id),
+                () -> assertEquals("/studentsa/" + expectedStudent.getId(),
+                        resp.andReturn().getResponse().getHeader("Location"))
         );
     }
 
