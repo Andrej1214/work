@@ -54,8 +54,8 @@ public class StudentServiceImpl implements StudentService {
     }
 
     /**
-     * @param id         студента, которого необходимо обновить
-     * @param studentDto DTO сущности студент, для обновления значений таблицы student по указанному id
+     * @param id студента, которого необходимо обновить
+     * @param studentDto DTO сущности студент, для обновления значений записи(строки) таблицы student по указанному id
      * @return возвращает сущность с обновленныыми данными
      */
     public Student updateStudent(int id, StudentDto studentDto) {

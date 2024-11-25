@@ -29,13 +29,14 @@ public class MainController {
     /**
      * пердназначен для записи данных передаваемой сущности в базу
      * @param studentDto данные сущности Student передаваемые в таблицу student
+     * @return статус 201
      */
     @Operation(
             summary = "добавление студента",
             description = "сущность собирается из передаваемого клиентом studentDto и затем ложится в базу"
     )
     @PostMapping()
-    public ResponseEntity<HttpStatus> addStudent(@RequestBody StudentDto studentDto) {
+    public ResponseEntity<?> addStudent(@RequestBody StudentDto studentDto) {
         Student student = studentServiceImp.saveStudent(
                 Student.builder()
                         .setName(studentDto.getName())
@@ -76,7 +77,7 @@ public class MainController {
      */
     @Operation(summary = "удаление студента по id")
     @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> deleteStudentById(@PathVariable int id) {
+    public ResponseEntity<?> deleteStudentById(@PathVariable int id) {
         studentServiceImp.deleteStudent(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -93,4 +94,20 @@ public class MainController {
         Student updatedStudent = studentServiceImp.updateStudent(id, studentDto);
         return new StudentDto(updatedStudent.getName(), updatedStudent.getAge());
     }
+    //При создании ресурса добавлять в Location (Header) путь к созданному ресурсу. POST - 201 - Location
+    //PUT - ПОЛНОЕ ОБНОВЛЕНИЕ, PATCH - НЕКОТОРЫЕ ПОЛЯ
+    //Try to be more precise.
+    //If the resource existed once but now has been deleted or deactivated, use 410 Gone.
+    //If the resource is available, but the user is not allowed to view it, return a 403 Forbidden.
+    //Keep Business Logic on the Server-Side
+    //указание версии API
+    //Read: Use GET for reading resources.
+    //Create: Use POST or PUT for creating new resources.
+    //Update: Use PUT and PATCH for updating existing resources.
+    //Delete: Use DELETE for deleting existing resources.
+    //GET(Idempotent),PUT(Idempotent),PATCH(Idempotent),DELETE(Idempotent),        POST(Not Idempotent)
+    //Use CamelCase for Attribute Names  { "yearOfBirth": 1982 }
+    //Use Verbs for Operations   GET /translate?from=de_DE&to=en_US&text=Hallo
+    //Provide Pagination  Offset-based Pagination    /employees?offset=30&limit=15 # returns the employees 30 to 45
+    //author: Philipp Hauer - Head Of Engineering at commercetools
 }
