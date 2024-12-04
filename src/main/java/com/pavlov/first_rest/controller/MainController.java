@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -41,6 +42,7 @@ public class MainController {
         Student student = studentServiceImp.saveStudent(
                 studentMapper.toStudent(studentDto)
         );
+        student.setSaveDate(LocalDateTime.now());
         log.info("Add one new user: {}", student);
         // при добавлении сущности в заголовок добавлять Location с url созданной сущности
         return ResponseEntity.created(URI.create("/students/" + student.getId())).build();
