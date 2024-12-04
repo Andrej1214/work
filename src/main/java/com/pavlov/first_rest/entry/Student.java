@@ -5,6 +5,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.proxy.HibernateProxy;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -23,6 +24,10 @@ public class Student {
     String name;
     @Column(name = "age")
     int age;
+    @Column(name = "save_date")
+    LocalDateTime saveDate;
+    @Column(name = "last_update_time")
+    LocalDateTime lastUpdateTime;
 
     /**
      * метод для сравнения текущего объекта с объектом передакаемом в параметре метода

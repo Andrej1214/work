@@ -2,6 +2,7 @@ package com.pavlov.first_rest.controller;
 
 import com.pavlov.first_rest.dto.StudentDto;
 import com.pavlov.first_rest.entry.Student;
+import com.pavlov.first_rest.mapping.StudentMapper;
 import com.pavlov.first_rest.service.impl.StudentServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -24,6 +25,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MainController {
     private final StudentServiceImpl studentServiceImp;
+    private final StudentMapper studentMapper;
 
     /**
      * пердназначен для записи данных передаваемой сущности в базу
@@ -37,10 +39,8 @@ public class MainController {
     @PostMapping()
     public ResponseEntity<?> addStudent(@RequestBody StudentDto studentDto) {
         Student student = studentServiceImp.saveStudent(
-                Student.builder()
-                        .setName(studentDto.getName())
-                        .setAge(studentDto.getAge())
-                        .build());
+                studentMapper.toStudent(studentDto)
+        );
         log.info("Add one new user: {}", student);
         // при добавлении сущности в заголовок добавлять Location с url созданной сущности
         return ResponseEntity.created(URI.create("/students/" + student.getId())).build();
