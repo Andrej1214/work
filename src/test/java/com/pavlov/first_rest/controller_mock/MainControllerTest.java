@@ -29,7 +29,7 @@ public class MainControllerTest {
     private MainController controller;
 
     private final int id = 1;
-    private final Student student = new Student(1,"Igor",18);
+    private final Student student = new Student(1,"Igor",18,null,null);
     private final StudentDto studentDto = StudentDto.builder().name("Igor").age(18).build();
 
     @Test
