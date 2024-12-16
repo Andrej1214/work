@@ -15,5 +15,4 @@ public class FirstRestApplication {
 		log.info("First Rest Application Started");
 		SpringApplication.run(FirstRestApplication.class, args);
 	}
-
 }
